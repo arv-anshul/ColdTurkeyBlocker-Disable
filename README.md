@@ -1,17 +1,31 @@
-# Disable all your Cold Turkey Blockers
+# Cold Turkey Blocker - Disable
 
-1. Clone this repository in your MAC.
-2. Run the `DisableBlocker.py` file.
-3. Enter `disable all` or `enable all` to disable or enable all your blocks respectively.
+<p align="center">
+  <img src="https://i.pinimg.com/originals/7f/df/fe/7fdffe1da47ebc87eef090c3a62ecf87.jpg" alt="Logo" width="200" />
+</p>
 
-```bash
-python3 DisableBlocker.py
+<center>
+    <h3 align="center">Disable all your Cold Turkey Blocks</h4>
+    <p align="center">
+        <strong>Supports:</strong> (v4.4)<br>
+        <strong>Created By:</strong> <a href="https://github.com/arv-anshul"> @arv-anshul</a><br>
+        <strong>Cold Turkey Blocker Pro:</strong> <a href="https://github.com/arv-anshul"> PRO</a><br>
+    </p> 
+</center>
+
+## How to use
+
+- Run `main.py` script.
+
+```sh
+python3 main.py
 ```
 
-## I have also a [repository](https://github.com/arv-anshul/ColdTurkeyBlocker-Pro) to enable the `PRO` perks in `Cold Turkey Blocker` app.
+- **Enter the random texts** as the specified format.
+- For every run the script **disable one random block**.
+- Rerun multiple times to **disable multiple blocks**.
 
-### Just clone the repository and run the py-script to enable the `PRO` perks.
+# Cold Turkey PRO
 
-## Created by [arv-anshul](https://github.com/arv-anshul)
-
-### :star2: This repo for future use.
+Get **Cold Turkey PRO** feature go to [`ColdTurkeyBlocker-PRO`](https://github.com/arv-anshul/ColdTurkeyBlocker-PRO) repository.  
+It will enable all the PRO feature provide by Cold Turkey Blocker community.
