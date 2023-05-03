@@ -26,6 +26,8 @@ def disableBlocker():
         # Checking your blockers
         print('\nChecking the blockers...')
         for i, blocker in enumerate(blocks):
+            if blocker == 'Frozen Turkey':
+                continue
             if blocks[blocker]['enabled'] == 'true':
                 print(f'{i+1}. "{blocker}"  >>  Enabled.')
             else:
@@ -39,14 +41,16 @@ def disableBlocker():
             # Enable all the blockers
             if inp == 'enable all':
                 if blocks[blocker]['enabled'] == 'false':
-                    blocks[blocker]['enabled'] = 'true'
-                    print(f'{i+1}. "{blocker}"  >>  Enabled.')
+                    if blocker != 'Frozen Turkey':
+                        blocks[blocker]['enabled'] = 'true'
+                        print(f'{i+1}. "{blocker}"  >>  Enabled.')
 
             # Disable all the blockers
             elif inp == 'disable all':
                 if blocks[blocker]['enabled'] != 'false':
-                    blocks[blocker]['enabled'] = 'false'
-                    print(f'{i+1}. "{blocker}"  >>  Disabled.')
+                    if blocker != 'Frozen Turkey':
+                        blocks[blocker]['enabled'] = 'false'
+                        print(f'{i+1}. "{blocker}"  >>  Disabled.')
 
             else:
                 print('\n~~~~~~~>>>>>  Rerun the Program  <<<<<~~~~~~~\n')
