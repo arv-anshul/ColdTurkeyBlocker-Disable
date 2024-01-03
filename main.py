@@ -5,120 +5,79 @@ Disable or Enable all your Cold Turkey Blockers in one command.
 """
 
 import json
+import logging
 import os
-import random
 import sqlite3
-import string
+from pathlib import Path
+from typing import Any
 
-DB_PATH = r'/Library/Application Support/Cold Turkey/data-app.db'
-LENGTH = 50
+MAC_DB_PATH = Path("/Library/Application Support/Cold Turkey/data-app.db")
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s -> %(message)s")
 
 
-def blocker_summary(blocks: dict):
-    print('\n' + '*'*LENGTH)
-
+def blocker_summary(blocks: dict[str, Any]) -> None:
+    """Shows a summary of all blocker present in the app in terminal."""
+    logging.critical("Blockers Summary...")
+    print("--" * 40)
     for blocker in blocks:
-        if blocker == 'Frozen Turkey':
+        if blocker == "Frozen Turkey":  # Ignore Frozen Turkey block
             continue
-        if blocks[blocker]['enabled'] == 'true':
-            print(f'Block Enabled:  {blocker}')
+        if blocks[blocker]["enabled"] == "true":
+            logging.info(f"Block Enabled:  {blocker}")
         else:
-            print(f'Block Disabled: {blocker}')
-
-    print('*'*LENGTH + '\n')
-
-
-def random_string(length: int) -> str:
-    chars = string.ascii_letters + string.digits + string.punctuation
-    return ''.join(random.choice(chars) for _ in range(length))
+            logging.info(f"Block Disabled: {blocker}")
+    print("--" * 40)
 
 
-def cli_decorate(
-        *args: str, center_txt: str | None = None, sep='\n', length: int = 50,
-):
-    if center_txt:
-        print('\n' + f' {center_txt} '.center(length, '*'))
-    else:
-        print('\n' + '*'*length)
-
-    print(f"{sep.join(args)}")
-    print('*'*length + '\n')
-
-
-def get_user_input() -> bool | None:
-    while True:
-        txt = random_string(4)
-        print(txt)
-        inp = input(
-            'To disable all blocker enter above string '
-            'by following the indexing of [::-2]\n'
-        )
-
-        # Exit the loop and process
-        if inp == '123ABC':
-            return None
-
-        if len(txt)//2 == len(inp) and inp == txt[::-2]:
-            return True
-        else:
-            cli_decorate(
-                f'Answer is {txt[::-2]}',
-                'Exit with "123ABC"',
-                center_txt='Enter Again'
-            )
-
-
-def operation_on_blocks(blocks: dict, what: bool | None) -> dict | None:
-    if what is None:
-        print('Exiting the process.')
-        return None
-
-    one_disabled = False
+def disable_blocker(blocks: dict[str, Any]) -> dict[str, Any]:
+    print()
+    logging.critical("Disabling the blocker...")
+    print("--" * 40)
     for blocker in blocks:
-        # Ignore Frozen Turkey block
-        if blocker == 'Frozen Turkey':
+        if blocker == "Frozen Turkey":  # Ignore Frozen Turkey block
             continue
-
-        # Return if one block disabled
-        if one_disabled:
-            return blocks
-
-        if blocks[blocker]['enabled'] == 'true':
-            blocks[blocker]['enabled'] = 'false'
-            cli_decorate(f'Now Disable: {blocker}'.center(LENGTH))
-            one_disabled = True
+        if blocks[blocker]["enabled"] == "true":
+            blocks[blocker]["enabled"] = "false"
+            logging.info(f"Block Disabled: {blocker}")
+    print("--" * 40)
+    return blocks
 
 
 def main():
-    conn = sqlite3.connect(DB_PATH)
+    # TODO: Configure this program for Windows as well.
+    db_path = MAC_DB_PATH
+
+    if not db_path.exists():
+        logging.info(f"{db_path = !s}")
+        logging.error("Database does not exists.")
+        exit(1)
+
     try:
-        c = conn.cursor()
+        with sqlite3.connect(db_path) as conn:
+            c = conn.cursor()
 
-        s = (c.execute("SELECT value FROM settings WHERE key = 'settings'")
-             .fetchone()[0])
-        data = json.loads(s)
-        blocks = data['blocks']
+            s = c.execute(
+                "SELECT value FROM settings WHERE key = 'settings'"
+            ).fetchone()[0]
 
-        # Display blocks summary
-        blocker_summary(blocks)
-        user_input = get_user_input()
+            data = json.loads(s)
+            blocks = data["blocks"]
+            blocker_summary(blocks)  # Display blocks summary in terminal
+            blocks = disable_blocker(blocks)
+            data["blocks"] = blocks  # Replace the blocks if modified
 
-        blocks = operation_on_blocks(blocks, user_input)
-
-        # Replace the blocks if modified
-        if blocks is not None:
-            data['blocks'] = blocks
-
-        c.execute("""UPDATE settings set value = ? WHERE "key" = 'settings'""",
-                  (json.dumps(data),))
-    except Exception as e:
-        print('Error:\n   ', e)
-    else:
+            c.execute(
+                """UPDATE settings set value = ? WHERE "key" = 'settings'""",
+                (json.dumps(data),),
+            )
         conn.commit()
+    except sqlite3.Error:
+        logging.error("Failed to Connect with Cold Turkey blocker.")
+        raise
     finally:
-        conn.close()
-        os.system(r'killall Cold\ Turkey\ Blocker')
+        os.system("/usr/bin/killall 'Cold Turkey Blocker'")  # noqa: S605
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
