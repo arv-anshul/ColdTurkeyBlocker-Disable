@@ -7,25 +7,26 @@
 <center>
     <h3 align="center">Disable all your Cold Turkey Blocks</h4>
     <p align="center">
-        <strong>Supports:</strong> (v4.4)<br>
+        <strong>Supports:</strong> (v4.5)<br>
         <strong>Created By:</strong> <a href="https://github.com/arv-anshul"> @arv-anshul</a><br>
-        <strong>Cold Turkey Blocker Pro:</strong> <a href="https://github.com/arv-anshul"> PRO</a><br>
+        <a href="https://github.com/arv-anshul/ColdTurkeyBlocker-PRO"><strong>Cold Turkey Blocker Pro</strong></a><br>
     </p> 
 </center>
 
 ## How to use
 
-- Run `main.py` script.
+> [!WARNING]
+>
+> This program is only for **MacOS** users.
+
+- Run this command in your terminal.
 
 ```sh
-python3 main.py
+python <(curl -sSL https://github.com/arv-anshul/ColdTurkeyBlocker-Disable/raw/main/main.py)
 ```
 
-- **Enter the random texts** as the specified format.
-- For every run the script **disable one random block**.
-- Rerun multiple times to **disable multiple blocks**.
+- In one run all your enabled blocks are disables.
 
-# Cold Turkey PRO
+## Cold Turkey PRO
 
-Get **Cold Turkey PRO** feature go to [`ColdTurkeyBlocker-PRO`](https://github.com/arv-anshul/ColdTurkeyBlocker-PRO) repository.  
-It will enable all the PRO feature provide by Cold Turkey Blocker community.
+Get **Cold Turkey PRO** feature go to [`ColdTurkeyBlocker-PRO`](https://github.com/arv-anshul/ColdTurkeyBlocker-PRO) repository. It will enable all the PRO feature provide by Cold Turkey Blocker community.
